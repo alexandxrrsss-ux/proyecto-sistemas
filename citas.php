@@ -1,0 +1,274 @@
+<?php
+// En PHP puro no necesitamos el comentario de Template Name, pero puedes dejarlo si quieres.
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citas | The Bros Auto Spa</title>
+    <style>
+        /* ===== ESTILOS GENERALES ===== */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container { text-align: center; }
+
+        /* Botón de regreso (Extra para navegación) */
+        .btn-volver {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-decoration: none;
+            color: #1b5e20;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* ===== BOTÓN DE RESERVA ===== */
+        .btn-reservar {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-reservar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.5);
+        }
+
+        /* ===== CHAT MODAL OVERLAY ===== */
+        .booking-chat-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); 
+            backdrop-filter: blur(6px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: all 0.3s;
+            z-index: 9999; padding: 20px;
+        }
+        .booking-chat-overlay.active { opacity: 1; visibility: visible; }
+
+        .booking-chat-box {
+            background: #f1f8e9;
+            color: #1b5e20;
+            width: 100%; max-width: 420px; height: 550px;
+            border-radius: 20px; display: flex; flex-direction: column;
+            overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid #a5d6a7;
+        }
+        .booking-chat-overlay.active .booking-chat-box { transform: scale(1); }
+
+        .chat-header {
+            background: linear-gradient(90deg, #2e7d32, #66bb6a);
+            padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
+            color: white;
+        }
+        .chat-brand { font-weight: 700; font-size: 18px; }
+        .chat-close { background: rgba(255,255,255,0.2); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
+
+        .chat-body {
+            flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;
+            background-image: radial-gradient(#c8e6c9 0.5px, transparent 0.5px);
+            background-size: 20px 20px;
+        }
+
+        .msg { max-width: 85%; padding: 12px 16px; border-radius: 18px; font-size: 14px; line-height: 1.5; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .msg.bot { background: #ffffff; align-self: flex-start; border-bottom-left-radius: 4px; color: #333; border: 1px solid #e0e0e0; }
+        .msg.user { background: #4caf50; align-self: flex-end; border-bottom-right-radius: 4px; color: white; }
+        .msg .time { font-size: 10px; opacity: 0.6; margin-top: 5px; display: block; text-align: right; }
+
+        .quick-replies { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 5px; }
+        .quick-btn { 
+            background: white; color: #2e7d32; border: 1.5px solid #4caf50; 
+            padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 600;
+            cursor: pointer; transition: 0.2s; 
+        }
+        .quick-btn:hover { background: #4caf50; color: white; }
+
+        .typing { display: flex; gap: 4px; padding: 10px 15px; background: #fff; border-radius: 15px; align-self: flex-start; border: 1px solid #eee;}
+        .typing span { width: 6px; height: 6px; background: #a5d6a7; border-radius: 50%; animation: typing 1.4s infinite; }
+        @keyframes typing { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
+
+        .chat-footer { padding: 15px; background: white; border-top: 1px solid #e8f5e9; display: flex; gap: 10px; align-items: center; }
+        #chatInput { flex: 1; padding: 12px 18px; border-radius: 25px; border: 1px solid #c8e6c9; outline: none; }
+        #chatSend { background: #4caf50; border: none; width: 42px; height: 42px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    </style>
+</head>
+<body>
+
+    <a href="index.php" class="btn-volver">← Volver al Inicio</a>
+
+    <div class="container">
+        <button class="btn-reservar" onclick="openBookingChat()">Reservar Cita Ahora</button>
+    </div>
+
+    <div id="bookingChat" class="booking-chat-overlay">
+        <div class="booking-chat-box">
+            <div class="chat-header">
+                <div class="chat-brand">🚗 The Bros Auto Spa</div>
+                <button class="chat-close" onclick="closeBookingChat()">✕</button>
+            </div>
+            <div class="chat-body" id="chatBody"></div>
+            <div class="chat-footer" id="chatFooter">
+                <input type="text" id="chatInput" placeholder="Escribe aquí..." autocomplete="off">
+                <button id="chatSend" onclick="handleUserMessage()">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const WHATSAPP_NUMBER = "524792620995";
+        const services = ["Lavado Premium", "Encerado Completo", "Limpieza Interior", "Detallado de Motor"];
+        let chatStep = 0;
+        let userData = { name: "", service: "", datetime: "" };
+        let isTyping = false;
+
+        const chatOverlay = document.getElementById("bookingChat");
+        const chatBody = document.getElementById("chatBody");
+        const chatInput = document.getElementById("chatInput");
+
+        function openBookingChat() {
+            chatOverlay.classList.add("active");
+            if (chatBody.children.length === 0) startConversation();
+            setTimeout(() => chatInput.focus(), 400);
+        }
+
+        function closeBookingChat() {
+            chatOverlay.classList.remove("active");
+            setTimeout(() => { 
+                chatBody.innerHTML = ""; 
+                chatStep = 0; 
+                userData = { name: "", service: "", datetime: "" }; 
+            }, 300);
+        }
+
+        function startConversation() {
+            showTyping(() => {
+                addBotMessage("¡Hola! 👋 Bienvenido a **The Bros Auto Spa**. Soy tu asistente virtual. ¿Con quién tengo el gusto de hablar?");
+                chatStep = 1;
+            });
+        }
+
+        function handleUserMessage() {
+            const text = chatInput.value.trim();
+            if (!text || isTyping) return;
+            addUserMessage(text);
+            chatInput.value = "";
+            processStep(text);
+        }
+
+        chatInput.addEventListener("keypress", e => { if (e.key === "Enter") handleUserMessage(); });
+
+        function processStep(text) {
+            switch(chatStep) {
+                case 1:
+                    userData.name = text;
+                    showTyping(() => {
+                        addBotMessage(`¡Excelente, ${userData.name}! ¿Qué servicio necesita tu vehículo hoy?`, services);
+                        chatStep = 2;
+                    });
+                    break;
+                case 2:
+                    userData.service = text;
+                    showTyping(() => {
+                        addBotMessage("Perfecto. ¿Qué día y hora te gustaría agendar? (Ej: Mañana a las 4:00 PM)");
+                        chatStep = 3;
+                    });
+                    break;
+                case 3:
+                    userData.datetime = text;
+                    showTyping(() => {
+                        addBotMessage("¡Todo listo! Para finalizar, presiona el botón de abajo y te conectaremos por WhatsApp para confirmar.");
+                        chatStep = 4;
+                        const confirmDiv = document.createElement("div");
+                        confirmDiv.className = "quick-replies";
+                        confirmDiv.innerHTML = `
+                            <button class="quick-btn" style="background:#4caf50; color:white; border:none" onclick="confirmBooking()">✅ Confirmar en WhatsApp</button>
+                            <button class="quick-btn" style="border-color:#ff5252; color:#ff5252" onclick="resetChat()">Reiniciar</button>
+                        `;
+                        chatBody.appendChild(confirmDiv);
+                        scrollToBottom();
+                    });
+                    break;
+            }
+        }
+
+        function confirmBooking() {
+            const msg = `Hola The Bros Auto Spa! 🚗✨\n\nQuiero reservar una cita:\n👤 Nombre: ${userData.name}\n🧼 Servicio: ${userData.service}\n📅 Fecha/Hora: ${userData.datetime}`;
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
+            closeBookingChat();
+        }
+
+        function resetChat() {
+            chatBody.innerHTML = "";
+            chatStep = 0;
+            startConversation();
+        }
+
+        function addBotMessage(text, quickOptions = []) {
+            const div = document.createElement("div");
+            div.className = "msg bot";
+            div.innerHTML = text;
+            chatBody.appendChild(div);
+            if (quickOptions.length > 0) {
+                const qr = document.createElement("div");
+                qr.className = "quick-replies";
+                quickOptions.forEach(opt => {
+                    const btn = document.createElement("button");
+                    btn.className = "quick-btn";
+                    btn.textContent = opt;
+                    btn.onclick = () => { chatInput.value = opt; handleUserMessage(); };
+                    qr.appendChild(btn);
+                });
+                chatBody.appendChild(qr);
+            }
+            scrollToBottom();
+        }
+
+        function addUserMessage(text) {
+            const div = document.createElement("div");
+            div.className = "msg user";
+            div.innerHTML = `${text}<span class="time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>`;
+            chatBody.appendChild(div);
+            scrollToBottom();
+        }
+
+        function showTyping(callback) {
+            isTyping = true;
+            const typingDiv = document.createElement("div");
+            typingDiv.className = "typing";
+            typingDiv.innerHTML = "<span></span><span></span><span></span>";
+            chatBody.appendChild(typingDiv);
+            scrollToBottom();
+            setTimeout(() => {
+                typingDiv.remove();
+                isTyping = false;
+                callback();
+            }, 1200);
+        }
+
+        function scrollToBottom() { chatBody.scrollTop = chatBody.scrollHeight; }
+    </script>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENCERADO COMPLETO | The Bros Auto Spa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        /* Hero Section Alternativo (Si no usas el header global) */
+        .hero-simple {
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('img/apliccera.png');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 5%;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-simple h1 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #f39c12;
+        }
+
+        /* Sections */
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #1a1a2e;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: #f39c12;
+            margin: 1rem auto 0;
+            border-radius: 2px;
+        }
+
+        /* Features */
+        .features {
+            padding: 5rem 5%;
+            background: #fff;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .feature-icon { font-size: 3rem; margin-bottom: 1rem; }
+
+        /* Gallery */
+        .gallery {
+            padding: 5rem 5%;
+            background: #1a1a2e;
+        }
+
+        .gallery .section-title { color: #fff; }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img { transform: scale(1.1); }
+
+        .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 2rem 1rem 1rem;
+            color: #fff;
+            text-align: center;
+        }
+
+        /* Pricing */
+        .pricing { padding: 5rem 5%; }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            background: #1a1a2e;
+            color: #fff;
+            border-color: #f39c12;
+            transform: scale(1.05);
+        }
+
+        .badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #f39c12;
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #f39c12;
+            margin: 1rem 0;
+        }
+
+        .pricing-card ul { list-style: none; text-align: left; margin-bottom: 2rem; }
+        .pricing-card li { padding: 8px 0; border-bottom: 1px solid #eee; }
+        .pricing-card.featured li { border-bottom: 1px solid #333; }
+
+        .btn-plan {
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-primary { background: #f39c12; color: #fff; }
+        .btn-secondary { border: 2px solid #1a1a2e; color: #1a1a2e; }
+
+        /* Contact Area */
+        .contact-info-box {
+            background: #1a1a2e;
+            color: #fff;
+            padding: 3rem;
+            border-radius: 15px;
+            max-width: 800px;
+            margin: 0 auto 50px;
+            text-align: center;
+        }
+
+        .contact-info-box h3 { color: #f39c12; margin-bottom: 1rem; }
+
+        /* Footer */
+        .footer { background: #1a1a2e; color: #fff; text-align: center; padding: 2rem; }
+
+        .btn-volver {
+            background: #00aaff;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero-simple">
+        <h1>Protección y Brillo Superior</h1>
+        <p>Servicio de Encerado Profesional para que tu auto luzca como nuevo.</p>
+    </section>
+
+    <section class="features">
+        <h2 class="section-title">¿Por qué elegir nuestro Encerado?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">☀️</div>
+                <h3>Protección Solar</h3>
+                <p>Barrera UV que previene la oxidación y decoloración.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌧️</div>
+                <h3>Repelente al Agua</h3>
+                <p>Efecto hidrofóbico que protege contra lluvia y humedad.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✨</div>
+                <h3>Brillo Espejo</h3>
+                <p>Acabado profesional con reflejo de alta definición.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Durabilidad</h3>
+                <p>Protección duradera hasta 6 meses.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery">
+        <h2 class="section-title">Nuestros Resultados</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="img/brilloespejo.png" alt="Resultado brillo espejo" onerror="this.src='https://via.placeholder.com/400x300?text=Brillo+Espejo'">
+                <div class="overlay"><p>Acabado Premium</p></div>
+            </div>
+            <div class="gallery-item">
+                <img src="img/antesdesp.png" alt="Antes y después" onerror="this.src='https://via.placeholder.com/400x300?text=Antes+y+Despues'">
+                <div class="overlay"><p>Protección Hidrofóbica</p></div>
+            </div>
+            <div class="gallery-item">
+                <img src="img/apliccera.png" alt="Aplicación de cera" onerror="this.src='https://via.placeholder.com/400x300?text=Aplicacion+Cera'">
+                <div class="overlay"><p>Aplicación Profesional</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing">
+        <h2 class="section-title">Planes Disponibles</h2>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3>Básico</h3>
+                <p class="price">$50</p>
+                <ul>
+                    <li>✓ Lavado completo</li>
+                    <li>✓ Cera estándar</li>
+                    <li>✓ Duración 2 meses</li>
+                </ul>
+                <a href="citas.php" class="btn-plan btn-secondary">Elegir</a>
+            </div>
+            <div class="pricing-card featured">
+                <div class="badge">Más Popular</div>
+                <h3>Premium</h3>
+                <p class="price">$120</p>
+                <ul>
+                    <li>✓ Lavado premium</li>
+                    <li>✓ Cera de alta gama</li>
+                    <li>✓ Duración 6 meses</li>
+                    <li>✓ Brillo espejo garantizado</li>
+                </ul>
+                <a href="citas.php" class="btn-plan btn-primary">Elegir</a>
+            </div>
+            <div class="pricing-card">
+                <h3>Elite</h3>
+                <p class="price">$200</p>
+                <ul>
+                    <li>✓ Todo incluido Premium</li>
+                    <li>✓ Cerámica adicional</li>
+                    <li>✓ Duración 12 meses</li>
+                </ul>
+                <a href="citas.php" class="btn-plan btn-secondary">Elegir</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="contact-info-box">
+        <h3>Información de Contacto</h3>
+        <p>📍 Blvd. Morelos #3123, León, Gto, México.</p>
+        <p>📞 +52 479 262 0995</p>
+        <p>✉️ thebrosautospa@gmail.com</p>
+        <p>🕒 Lun-Sáb: 8:00 AM - 6:00 PM</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 50px;">
+        <a href="index.php" class="btn-volver">Volver al Inicio</a>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 The Bros Auto Spa. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>

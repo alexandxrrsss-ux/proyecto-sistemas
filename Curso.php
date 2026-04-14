@@ -165,7 +165,7 @@
         </div>
 
         <div class="service-card" onclick="abrirModal('Llantas y Rines','Aprenderás a eliminar suciedad difícil, grasa y aplicar brillo protector.')">
-            <img src="img/limpiezaint.png" class="service-image" onerror="this.src='https://via.placeholder.com/300x200?text=Llantas+y+Rines'">
+            <img src="limpiezaint.png" class="service-image" onerror="this.src='https://via.placeholder.com/300x200?text=Llantas+y+Rines'">
             <div class="service-info">
                 <div class="service-icon"><i class="fas fa-brush"></i></div>
                 <h3>Llantas y Rines</h3>
@@ -180,7 +180,7 @@
         </div>
 
         <div class="service-card" onclick="abrirModal('Secado Profesional','Aprenderás a secar sin dejar marcas usando microfibra premium.')">
-            <img src="img/secadoint.png" class="service-image" onerror="this.src='https://via.placeholder.com/300x200?text=Secado+Profesional'">
+            <img src="secadoint.png" class="service-image" onerror="this.src='https://via.placeholder.com/300x200?text=Secado+Profesional'">
             <div class="service-info">
                 <div class="service-icon"><i class="fas fa-hand-sparkles"></i></div>
                 <h3>Secado</h3>
@@ -195,7 +195,7 @@
         </div>
 
         <div class="service-card" onclick="abrirModal('Limpieza Interior','Aprenderás limpieza profunda, desinfección y eliminación de olores.')">
-            <img src="img/rinint.png" class="service-image" onerror="this.src='https://via.placeholder.com/300x200?text=Interior'">
+            <img src="rinint.png" class="service-image" onerror="this.src='https://via.placeholder.com/300x200?text=Interior'">
             <div class="service-info">
                 <div class="service-icon"><i class="fas fa-spray-can"></i></div>
                 <h3>Interior</h3>
@@ -212,7 +212,7 @@
     </div>
 
     <div style="text-align: center; margin: 50px 0;">
-        <a href="index.php" class="btn-volver">
+        <a href="index.html" class="btn-volver">
             <i class="fas fa-arrow-left"></i> Volver al Inicio
         </a>
     </div>
